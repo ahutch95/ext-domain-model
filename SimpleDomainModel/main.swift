@@ -170,7 +170,7 @@ open class Person {
     return("[Person: firstName:\(firstName) lastName:\(lastName) age:\(age) job:\(job) spouse:\(spouse)]")
   }
 }
-/*"[Person: firstName:Ted lastName:Neward age:45 job:nil spouse:nil]"
+
 ////////////////////////////////////
 // Family
 //
@@ -178,16 +178,35 @@ open class Family {
   fileprivate var members : [Person] = []
   
   public init(spouse1: Person, spouse2: Person) {
+    if spouse1._spouse == nil && spouse2._spouse == nil {
+        spouse1._spouse = spouse2
+        members.append(spouse1)
+        spouse2._spouse = spouse1
+        members.append(spouse2)
+    }
   }
   
   open func haveChild(_ child: Person) -> Bool {
+    var legal = false
+    for i in members {
+        if i.age > 21 {
+            legal = true
+        }
+    }
+    if legal {
+        members.append(child)
+    }
+    return legal
   }
   
   open func householdIncome() -> Int {
+    var totalIncome = 0;
+    for i in members {
+        if i.job != nil {
+            totalIncome += i.job!.calculateIncome(40 * 50)
+        }
+    }
+    return totalIncome
   }
 }
 
-
-
-
-*/
